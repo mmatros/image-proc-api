@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "github.com/mmatros/image-proc-api/api";
+
+package imageproc;
+
+service ImageProcApi{
+    rpc ConvertImage (ConvertRequest) returns (ConvertResponse){}
+}
+
+message ConvertRequest{
+    bytes image = 1;
+}
+
+message ConvertResponse{
+    bytes image = 1;
+}
+
+
