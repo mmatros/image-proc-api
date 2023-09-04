@@ -1,10 +1,7 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"fmt"
-	"image/png"
 	"log"
 
 	img "github.com/mmatros/image-proc-api/internal/image"
@@ -31,25 +28,24 @@ func main() {
 	defer conn.Close()
 	client := api.NewImageProcApiClient(conn)
 
-	// create buffer
-	buff := new(bytes.Buffer)
-
-	// encode image to buffer
-	err = png.Encode(buff, im)
+	data, err := img.EncodeImage(im)
 	if err != nil {
-		fmt.Println("failed to create buffer", err)
+		log.Fatalf("can't encode image")
 	}
+
 	req := api.ConvertRequest{
-		Image: buff.Bytes(),
+		Image: data,
 	}
 	resp, err := client.ConvertImage(context.Background(), &req)
 	if err != nil {
 		log.Fatalf("failed to convert image %v", err)
 	}
-	data := resp.GetImage()
+	data = resp.GetImage()
 	result, err := img.ReadImageFromBuffer(data)
 	if err != nil {
 		log.Fatalf("failed to read image from buffer %v", err)
 	}
-	img.SaveImage(result, "result.png")
+	if err = img.SaveImage(result, "result.png"); err != nil {
+		log.Fatalf("can't save image %v", err)
+	}
 }
