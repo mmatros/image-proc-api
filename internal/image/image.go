@@ -29,13 +29,21 @@ func readImage(reader io.Reader) (image.Image, error) {
 	return image, err
 }
 
-// SaveImage ...
-func SaveImage(im image.Image, filePath string) error {
-	// create buffer
+// EncodeImage ...
+func EncodeImage(image image.Image) ([]byte, error) {
 	buff := new(bytes.Buffer)
 
-	// encode image to buffer
-	err := png.Encode(buff, im)
+	err := png.Encode(buff, image)
+	if err != nil {
+		return nil, err
+	}
+
+	return buff.Bytes(), nil
+}
+
+// SaveImage ...
+func SaveImage(im image.Image, filePath string) error {
+	data, err := EncodeImage(im)
 	if err != nil {
 		return err
 	}
@@ -43,6 +51,6 @@ func SaveImage(im image.Image, filePath string) error {
 	if err != nil {
 		return err
 	}
-	_, err = file.Write(buff.Bytes())
+	_, err = file.Write(data)
 	return err
 }
