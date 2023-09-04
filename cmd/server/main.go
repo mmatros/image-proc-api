@@ -4,8 +4,12 @@ import (
 	"log"
 	"net"
 
-	"github.com/mmatros/image-proc-api/api"
+	api "github.com/mmatros/image-proc-api/pkg/api/imageproc_v1"
+
+	"github.com/mmatros/image-proc-api/internal/server"
+
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -14,6 +18,9 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	api.RegisterImageProcApiServer(grpcServer, api.NewServer())
-	grpcServer.Serve(lis)
+	reflection.Register(grpcServer)
+	api.RegisterImageProcApiServer(grpcServer, server.NewServer())
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("error on serve grpc %v", err)
+	}
 }

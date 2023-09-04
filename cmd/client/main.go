@@ -7,8 +7,10 @@ import (
 	"image/png"
 	"log"
 
-	"github.com/mmatros/image-proc-api/api"
 	img "github.com/mmatros/image-proc-api/internal/image"
+
+	api "github.com/mmatros/image-proc-api/pkg/api/imageproc_v1"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: api/image-proc-api.proto
+// source: api/imageproc_v1/imageprocapi.proto
 
-package api
+package imageprocapi_v1
 
 import (
 	context "context"
@@ -35,7 +35,7 @@ func NewImageProcApiClient(cc grpc.ClientConnInterface) ImageProcApiClient {
 
 func (c *imageProcApiClient) ConvertImage(ctx context.Context, in *ConvertRequest, opts ...grpc.CallOption) (*ConvertResponse, error) {
 	out := new(ConvertResponse)
-	err := c.cc.Invoke(ctx, "/imageproc.ImageProcApi/ConvertImage", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/imageproc_v1.ImageProcApi/ConvertImage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func _ImageProcApi_ConvertImage_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/imageproc.ImageProcApi/ConvertImage",
+		FullMethod: "/imageproc_v1.ImageProcApi/ConvertImage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ImageProcApiServer).ConvertImage(ctx, req.(*ConvertRequest))
@@ -92,7 +92,7 @@ func _ImageProcApi_ConvertImage_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ImageProcApi_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "imageproc.ImageProcApi",
+	ServiceName: "imageproc_v1.ImageProcApi",
 	HandlerType: (*ImageProcApiServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -101,5 +101,5 @@ var ImageProcApi_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/image-proc-api.proto",
+	Metadata: "api/imageproc_v1/imageprocapi.proto",
 }
